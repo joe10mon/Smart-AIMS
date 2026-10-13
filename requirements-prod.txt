@@ -1,0 +1,4 @@
+# Used by the Docker image. PythonAnywhere and local development only need requirements.txt.
+-r requirements.txt
+gunicorn>=22.0
+whitenoise>=6.7

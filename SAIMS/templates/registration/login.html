@@ -1,0 +1,25 @@
+{% extends "SAIMS/base.html" %}
+
+{% block title %}Log in - Smart AIMS{% endblock %}
+
+{% block content %}
+  <div class="auth">
+    <h1>Log in</h1>
+
+    {% for error in form.non_field_errors %}
+      <p class="error" role="alert">{{ error }}</p>
+    {% endfor %}
+
+    <form method="post">
+      {% csrf_token %}
+      <label for="{{ form.username.id_for_label }}">Username</label>
+      {{ form.username }}
+
+      <label for="{{ form.password.id_for_label }}">Password</label>
+      {{ form.password }}
+
+      <input type="hidden" name="next" value="{{ next }}">
+      <button type="submit">Log in</button>
+    </form>
+  </div>
+{% endblock %}

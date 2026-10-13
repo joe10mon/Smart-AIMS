@@ -1,0 +1,6 @@
+# Keep line endings sane across Windows and Linux/Docker.
+* text=auto
+# Shell scripts and the Dockerfile must stay LF, or the container fails with
+# "/bin/sh^M: bad interpreter" when git on Windows converts them to CRLF.
+*.sh text eol=lf
+Dockerfile text eol=lf

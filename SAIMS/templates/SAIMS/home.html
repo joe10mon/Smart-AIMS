@@ -1,0 +1,75 @@
+{% extends "SAIMS/base.html" %}
+
+{% block title %}My assets - Smart AIMS{% endblock %}
+
+{% block content %}
+  <h1>Hello, {{ user.first_name|default:user.username }}</h1>
+
+  <h2>My assets</h2>
+  {% if my_assignments %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Asset</th><th>Type</th><th>Serial number</th><th>Assigned on</th></tr>
+        </thead>
+        <tbody>
+          {% for assignment in my_assignments %}
+            <tr>
+              <td>{{ assignment.asset.name }}</td>
+              <td>{{ assignment.asset.get_type_display }}</td>
+              <td>{{ assignment.asset.serial_number }}</td>
+              <td>{{ assignment.date_assigned }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="empty">Nothing is assigned to you right now. Ask an admin to assign equipment to you.</p>
+  {% endif %}
+
+  <h2>Open repairs on my assets</h2>
+  {% if repairs_on_my_assets %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Ticket</th><th>Asset</th><th>Issue</th><th>Status</th><th>Technician</th></tr>
+        </thead>
+        <tbody>
+          {% for ticket in repairs_on_my_assets %}
+            <tr>
+              <td>#{{ ticket.pk }}</td>
+              <td>{{ ticket.asset.name }}</td>
+              <td>{{ ticket.issue|truncatechars:80 }}</td>
+              <td>{{ ticket.get_status_display }}</td>
+              <td>{% firstof ticket.assigned_technician.get_full_name ticket.assigned_technician.username "Not assigned yet" %}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="empty">None of your assets are being repaired.</p>
+  {% endif %}
+
+  {% if tickets_assigned_to_me %}
+    <h2>Repair tickets assigned to me</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Ticket</th><th>Asset</th><th>Issue</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          {% for ticket in tickets_assigned_to_me %}
+            <tr>
+              <td>#{{ ticket.pk }}</td>
+              <td>{{ ticket.asset.name }}</td>
+              <td>{{ ticket.issue|truncatechars:80 }}</td>
+              <td>{{ ticket.get_status_display }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+{% endblock %}

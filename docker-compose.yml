@@ -1,0 +1,18 @@
+# Local / single-server setup:  docker compose up --build
+# Needs a .env file next to this one (copy .env.example and set DJANGO_SECRET_KEY).
+services:
+  web:
+    build: .
+    env_file: .env
+    environment:
+      # These two override whatever .env says.
+      DJANGO_USE_WHITENOISE: "True"
+      SQLITE_PATH: /data/db.sqlite3
+    volumes:
+      - saims_data:/data      # keeps the database across restarts and rebuilds
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+volumes:
+  saims_data:
